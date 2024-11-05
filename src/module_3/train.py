@@ -75,10 +75,6 @@ def select_features(df: pd.DataFrame) -> list:
     model = make_pipeline(StandardScaler(), LogisticRegression())
     model.fit(X_train, Y_train)
 
-    best_threshold = get_best_treshold(Y_val, model.predict_proba(X_val)[:, 1])
-    y_val_pred = np.array(
-        [1 if p > best_threshold else 0 for p in model.predict_proba(X_val)[:, 1]]
-    )
     logit_results = logit_significance(X_train, Y_train)
     selected_features = (
         logit_results.pvalues[logit_results.pvalues < 0.05].sort_values().index[:3]
